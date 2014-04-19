@@ -1,7 +1,7 @@
 from entity.item import Item
 from entity.room import Room
 from entity.obstruction import Obstruction
-from exception import CannotPerformAction
+from text_adventure.exception import CannotPerformAction
 
 class Door(object):
     def __init__(self,

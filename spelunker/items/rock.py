@@ -1,5 +1,5 @@
 from entity.item import Item
-from inventory import InventoryManager
+from text_adventure.inventory import InventoryManager
 class Rock(Item):
     def __init__(self,
                  name,

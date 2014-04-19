@@ -1,8 +1,8 @@
 from entity.item import Item
-from stateMachine.state import State
-from stateMachine.stateMachine import StateMachine
-from exception import CannotPerformAction
-from inventory import InventoryManager
+from text_adventure.stateMachine.state import State
+from text_adventure.stateMachine.stateMachine import StateMachine
+from text_adventure.exception import CannotPerformAction
+from text_adventure.inventory import InventoryManager
 
 class Tree(Item):
     def __init__(self,

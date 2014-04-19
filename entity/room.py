@@ -1,9 +1,9 @@
 from entity.gameEntity import GameEntity
-from exception import (NotPresent, 
-                       AmbiguousEntity, 
-                       MissingObject,
-                       CannotPerformAction)
-from inventory import InventoryManager
+from text_adventure.exception import (NotPresent, 
+                                      AmbiguousEntity, 
+                                      MissingObject,
+                                      CannotPerformAction)
+from text_adventure.inventory import InventoryManager
 
 class Room(GameEntity):
     

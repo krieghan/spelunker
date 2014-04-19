@@ -1,6 +1,6 @@
 from entity.item import Item
-from inventory import InventoryManager
-from exception import CannotPerformAction
+from text_adventure.inventory import InventoryManager
+from text_adventure.exception import CannotPerformAction
 class Bag(Item):
     def __init__(self,
                  name,

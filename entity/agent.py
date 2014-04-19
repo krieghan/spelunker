@@ -1,7 +1,7 @@
 from entity.room import Room
 from entity.gameEntity import GameEntity
-from exception import CannotPerformAction
-from inventory import InventoryManager
+from text_adventure.exception import CannotPerformAction
+from text_adventure.inventory import InventoryManager
 
 
 class Agent(GameEntity):

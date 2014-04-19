@@ -1,8 +1,8 @@
 from entity.animal import Animal
 from entity.item import Item
-from exception import PlayerDeath, CannotPerformAction
-from stateMachine.state import State
-from stateMachine.stateMachine import StateMachine
+from text_adventure.exception import PlayerDeath, CannotPerformAction
+from text_adventure.stateMachine.state import State
+from text_adventure.stateMachine.stateMachine import StateMachine
 
 class Wolf(Animal):
     

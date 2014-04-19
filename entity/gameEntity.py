@@ -1,6 +1,6 @@
-from inventory import InventoryManager, Inventory
-from exception import (CannotPerformAction,
-                       ItemNotFound)
+from text_adventure.inventory import InventoryManager, Inventory
+from text_adventure.exception import (CannotPerformAction,
+                                      ItemNotFound)
 
 class GameEntity(object):
     def __init__(self,

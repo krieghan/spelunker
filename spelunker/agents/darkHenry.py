@@ -1,7 +1,7 @@
 from entity.item import Item
 from entity.man import Man
-from stateMachine.stateMachine import StateMachine
-from stateMachine.state import State
+from text_adventure.stateMachine.stateMachine import StateMachine
+from text_adventure.stateMachine.state import State
 
 
 class DarkHenry(Man):

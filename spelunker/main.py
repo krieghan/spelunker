@@ -1,22 +1,23 @@
 import sys
 
-from entity.room import Room
-from entity.agent import Agent
-from entity.item import Item
-from exception import \
+from text_adventure.grammar.interpreter import Interpreter
+from text_adventure.inventory import displayPlayerInventory
+from text_adventure.exception import \
     (CouldNotInterpret, 
      CannotGoThatWay,
      CannotPerformAction, 
      DenyInput, 
      NotImplemented,
      PlayerDeath)
-from grammar.interpreter import Interpreter
+
+from entity.room import Room
+from entity.agent import Agent
+from entity.item import Item
 from spelunker.items.items import createItems
 from spelunker.agents.agents import createAgents
 from spelunker.rooms.rooms import createRooms
 from spelunker.container import fillContainers
 from spelunker.dictionary import dictionary, thesaurus
-from inventory import displayPlayerInventory
 from spelunker.agents.player import Player
 
 class Game(object):
@@ -30,10 +31,8 @@ class Game(object):
         fillContainers()
         entityNouns = [x.lower() for x in self.getEntityNames()]
         dictionary.get('nouns').extend(entityNouns)
-        multiWordTokens = self.getMultiWordTokens()
         interpreter = Interpreter(dictionary=dictionary,
-                                  thesaurus=thesaurus,
-                                  multiWordTokens=multiWordTokens)
+                                  thesaurus=thesaurus)
         
         self.player.changeOwner(Room.getRoom('Entrance'))
         print self.player.currentOwner.getDescription()
@@ -52,25 +51,6 @@ class Game(object):
             except PlayerDeath:
                 print "You have died"
                 sys.exit()
-    
-    
-    def getMultiWordTokens(self):
-        multiWordTokens = []
-        for (key, listOfTokens) in dictionary.items():
-            for token in listOfTokens:
-                if ' ' in token:
-                    multiWordTokens.append(token)
-    
-        for synonymSet in thesaurus:
-            for token in synonymSet:
-                if ' ' in token:
-                    multiWordTokens.append(token)
-                    
-        for key in self.getEntityNames():
-            if ' ' in key:
-                multiWordTokens.append(key)
-        
-        return multiWordTokens
     
     def getEntityNames(self):
         return Agent.getNames() + Room.getNames() + Item.getNames()

@@ -1,5 +1,5 @@
 from entity.human import Human
-from inventory import InventoryManager
+from text_adventure.inventory import InventoryManager
 
 class Player(Human):
     def __init__(self,

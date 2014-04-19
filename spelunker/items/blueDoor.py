@@ -1,5 +1,5 @@
 from entity.item import Item
-from exception import CannotPerformAction
+from text_adventure.exception import CannotPerformAction
 
 from spelunker.items.door import RoomDoor
 
