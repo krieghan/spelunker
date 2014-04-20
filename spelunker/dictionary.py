@@ -143,7 +143,13 @@ dictionary = dict(
             'her',
             'it'],
   names=['alec',
-         'henry'])
+         'henry'],
+  commands=['quit',
+            'exit'
+            'inventory',
+            'save',
+            'load',
+            'restore'])
 
 plurals = dict(body='bodies')
 
