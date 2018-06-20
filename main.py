@@ -46,7 +46,7 @@ class Game(object):
                 if not succeeded:
                     raise CouldNotInterpret('I understood "%s", but did not know what to do with it.' % actionText)
             except DenyInput, e:
-                print e
+                print str(e)
                 continue
             except PlayerDeath:
                 print "You have died"

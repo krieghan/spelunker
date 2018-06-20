@@ -52,7 +52,12 @@ class Agent(GameEntity):
         return names
     
     def get(self,
-            entityToGet):
+            entityNames,
+            entities):
+        entityName = entityNames['main']
+        entityToGet = entities['main']
+        if self.inventory.match(entityName):
+            raise CannotPerformAction('You already have the {}'.format(entityName))
         if not entityToGet.isGettable:
             raise CannotPerformAction('You cannot get the %s.' % entityToGet.name)
         else:
@@ -365,8 +370,9 @@ class Agent(GameEntity):
         entityToSearch.handleReceiveSearch(searchingAgent=self,
                                            entityToSearchWith=entityToSearchWith)
         
-    def lookAt(self,
-               entityToLookAt):
+    def look(self,
+             objects):
+        entityToLookAt = objects.get('main', objects.get('at'))
         entityToLookAt.handleReceiveLook(lookingAgent=self,
                                          relation='at')
         

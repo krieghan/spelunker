@@ -111,7 +111,6 @@ dictionary = dict(
          'cave',
          'path',
          'note',
-         'inventory',
          'road',
          'ground',
          'body'],
@@ -145,7 +144,7 @@ dictionary = dict(
   names=['alec',
          'henry'],
   commands=['quit',
-            'exit'
+            'exit',
             'inventory',
             'save',
             'load',

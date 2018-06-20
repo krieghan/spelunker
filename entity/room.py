@@ -1,6 +1,7 @@
 from entity.gameEntity import GameEntity
+from text_adventure import (
+        exception)
 from text_adventure.exception import (NotPresent, 
-                                      AmbiguousEntity, 
                                       MissingObject,
                                       CannotPerformAction)
 from text_adventure.inventory import InventoryManager
@@ -112,16 +113,17 @@ class Room(GameEntity):
               entityName,
               player,
               default='default'):
-        matches = []
-        matches.extend(player.inventory.match(entityName))
-        matches.extend(self.inventory.match(entityName))
+        matches = set()
+        matches.update(player.inventory.match(entityName))
+        matches.update(self.inventory.match(entityName))
+        matches = list(matches)
         if len(matches) == 0:
             if default != 'default':
                 return default
             else:
                 raise NotPresent('There is no %s here' % entityName)
         if len(matches) > 1:
-            raise AmbiguousEntity(matches)
+            raise exception.AmbiguousResource(matches)
         if len(matches) == 1:
             match = matches[0]
             return match
@@ -140,7 +142,7 @@ class Room(GameEntity):
                 raise NotPresent('You do not have the %s' % 
                                  entityName)
         if len(matches) > 1:
-            raise AmbiguousEntity(matches)
+            raise exception.AmbiguousResource(matches)
         if len(matches) == 1:
             match = matches[0]
             return match
@@ -156,7 +158,7 @@ class Room(GameEntity):
             else:
                 raise NotPresent('There is no %s here' % entityName)
         if len(matches) > 1:
-            raise AmbiguousEntity(matches)
+            raise exception.AmbiguousResource(matches)
         if len(matches) == 1:
             match = matches[0]
         return match
@@ -164,26 +166,22 @@ class Room(GameEntity):
     def actOnAction(self, 
                     action,
                     player):
-        verb = action.verb
+        verb = action.sentence.verb
         if action.isGetting():
-            entityName = action.object
-            indirectObjectName = action.indirectObject
-            if indirectObjectName is None:
-                indirectObject = None
-                containingInventory = self.inventory
-                notPresentException = NotPresent('There is no %s here' % entityName)
-            else:
-                indirectObject = self.matchToRoom(entityName=indirectObjectName,
-                                                  default=None)
-                containingInventory = indirectObject.inventory
-                notPresentException =\
-                    NotPresent('%s has no %s' % 
-                               (indirectObject.getDisplayNameWithDefiniteArticle(),
-                                entityName))
+            entityName = action.sentence.object
+            indirectObject = self.matchToRoom(
+                entityName=entityName,
+                default=None)
+            notPresentException =\
+                NotPresent(
+                    '%s has no %s' % 
+                       (
+                        indirectObject.getDisplayNameWithDefiniteArticle(),
+                        entityName))
             if entityName is None:
                 raise MissingObject('What do you want to get?')
             matches = []
-            matches.extend(containingInventory.match(entityName))
+            matches.extend(self.inventory.match(entityName))
             if len(matches) == 1:
                 match = matches[0]
                 player.get(entityToGet=match)
@@ -194,7 +192,7 @@ class Room(GameEntity):
                     match = matches[0]
                     raise CannotPerformAction('You already have the %s' % match.name)
             if len(matches) > 1:
-                raise AmbiguousEntity(matches)
+                raise exception.AmbiguousResource(matches)
             
             raise notPresentException
         if action.isDropping():
@@ -213,7 +211,7 @@ class Room(GameEntity):
                     match = matches[0]
                     raise CannotPerformAction("You don't have the %s" % match.name)
             if len(matches) > 1:
-                raise AmbiguousEntity(matches)
+                raise exception.AmbiguousResource(matches)
         if action.isPlacing():
             nameOfObjectToPlace = action.object
             containerName = action.indirectObject
@@ -297,16 +295,15 @@ class Room(GameEntity):
             player.give(entityToGive=directObject,
                         entityToGiveTo=indirectObject)
             return True
-        
-        nameOfDirectObject = action.object
-        nameOfIndirectObject = action.indirectObject
+
+        nameOfDirectObject = action.sentence.object
         
         if nameOfDirectObject is None:
             raise MissingObject('What do you want to %s' % verb)
         directObject = self.match(nameOfDirectObject,
                                   player)
         
-        if action.isLookingAtEntity():
+        if action.isLooking():
             player.lookAt(entityToLookAt=directObject)
             return True
         if action.isReading():

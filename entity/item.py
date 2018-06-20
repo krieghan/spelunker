@@ -24,7 +24,7 @@ class Item(GameEntity):
         self.__class__.registry[name] = self
         self.displayName = displayName
         if displayName is not None:
-            self.names.append(displayName.lower())
+            self.names.add(displayName.lower())
         
     @classmethod
     def getItem(cls,
@@ -41,7 +41,6 @@ class Item(GameEntity):
         for (key, element) in cls.registry.items():
             names.extend(element.names)
         return names
-
     
 
     def getDescription(self,

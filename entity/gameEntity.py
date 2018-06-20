@@ -23,7 +23,11 @@ class GameEntity(object):
             attachedTo = []
         self.inventory = inventory
         self.name = name
-        self.names = [x.lower() for x in aliases] + [name.lower()]
+        self.names = set()
+        self.names.add(name.lower())
+        for alias in aliases:
+            self.names.add(alias.lower())
+
         self.description = description
         self.shortDescription = shortDescription
         self.isGettable = isGettable
@@ -36,7 +40,7 @@ class GameEntity(object):
         self.attachedTo = attachedTo
         objectivePronoun = self.getObjectivePronoun()
         if objectivePronoun:
-            self.names.append(objectivePronoun)
+            self.names.add(objectivePronoun)
         
     def addEntity(self,
                   entity,
